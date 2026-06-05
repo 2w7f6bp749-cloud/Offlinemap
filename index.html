@@ -11,20 +11,26 @@ href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <div id="map"></div>
 
+<div id="crosshair">+</div>
+
+<div id="infoPanel">
+    <div id="altitude">標高 -- m</div>
+    <div id="version">v0.6.0</div>
+</div>
+
 <div class="controls">
 
-<button id="layerBtn">
-標準
-</button>
+    <button id="layerBtn">
+        標準
+    </button>
 
-<button id="gpsBtn">
-◎
-</button>
+    <button id="gpsBtn">
+        ◎
+    </button>
 
 </div>
 
