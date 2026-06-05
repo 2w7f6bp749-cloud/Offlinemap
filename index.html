@@ -2,44 +2,36 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
+
 <title>OfflineMap</title>
 
 <link rel="stylesheet"
- href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-<style>
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-}
-
-#map {
-    width: 100%;
-    height: 100%;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div id="map"></div>
 
+<div class="controls">
+
+<button id="layerBtn">
+地形
+</button>
+
+<button id="gpsBtn">
+◎
+</button>
+
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<script>
-const map = L.map('map').setView([42.85, 140.65], 10);
-
-L.tileLayer(
-'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
-{
-    attribution: '国土地理院',
-    maxZoom: 18
-}
-).addTo(map);
-</script>
+<script src="app.js"></script>
 
 </body>
 </html>
