@@ -1,4 +1,6 @@
-const map = L.map('map');
+const map = L.map('map',{
+zoomControl:false
+});
 
 map.setView([42.85,140.65],10);
 
@@ -85,6 +87,12 @@ document.getElementById('gpsBtn');
 let watchId = null;
 let following = false;
 let marker = null;
+let currentAltitude = null;
+
+const altitudeLabel =
+document.getElementById(
+'altitude'
+);
 
 gpsBtn.addEventListener('click',()=>{
 
@@ -107,6 +115,18 @@ pos.coords.latitude;
 const lng=
 pos.coords.longitude;
 
+currentAltitude =
+pos.coords.altitude;
+
+if(currentAltitude !== null){
+
+altitudeLabel.innerText =
+'標高 ' +
+Math.round(currentAltitude) +
+' m';
+
+}
+  
 if(!marker){
 
 marker=
@@ -159,6 +179,27 @@ timeout:10000
 );
 
 }else{
+
+following=false;
+
+gpsBtn.classList.remove(
+'following'
+);
+
+if(watchId){
+
+navigator.geolocation.clearWatch(
+watchId
+);
+
+}
+
+}
+
+});
+map.on('dragstart',()=>{
+
+if(following){
 
 following=false;
 
