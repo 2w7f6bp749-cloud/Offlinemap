@@ -1,54 +1,90 @@
 const map = L.map('map');
 
+map.setView([42.85,140.65],10);
+
+// 標準地図
 const standard = L.tileLayer(
 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png',
 {
-maxZoom:18,
-attribution:'国土地理院'
+attribution:'国土地理院',
+maxZoom:18
 }
 );
 
-const topo = L.tileLayer(
-'https://cyberjapandata.gsi.go.jp/xyz/relief/{z}/{x}/{y}.png',
+// 陰影起伏図
+const hillshade = L.tileLayer(
+'https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{z}/{x}/{y}.png',
 {
-maxZoom:15,
-opacity:0.45
+opacity:0.45,
+maxNativeZoom:16,
+maxZoom:18
+}
+);
+
+// 傾斜量図
+const slope = L.tileLayer(
+'https://cyberjapandata.gsi.go.jp/xyz/slopemap/{z}/{x}/{y}.png',
+{
+opacity:0.45,
+maxNativeZoom:15,
+maxZoom:18
 }
 );
 
 standard.addTo(map);
 
-map.setView(
-[42.85,140.65],
-10
-);
+let mapMode = 0;
 
-let topoVisible = false;
+const layerBtn =
+document.getElementById('layerBtn');
 
-document
-.getElementById('layerBtn')
-.addEventListener('click',()=>{
+layerBtn.addEventListener('click',()=>{
 
-if(topoVisible){
+mapMode++;
 
-map.removeLayer(topo);
-topoVisible=false;
+if(mapMode>2){
+mapMode=0;
+}
 
-}else{
+map.removeLayer(hillshade);
+map.removeLayer(slope);
 
-topo.addTo(map);
-topoVisible=true;
+switch(mapMode){
+
+case 0:
+
+layerBtn.innerText='標準';
+
+break;
+
+case 1:
+
+hillshade.addTo(map);
+
+layerBtn.innerText='陰影';
+
+break;
+
+case 2:
+
+slope.addTo(map);
+
+layerBtn.innerText='傾斜';
+
+break;
 
 }
 
 });
 
-let marker=null;
-let watchId=null;
-let following=false;
+// GPS
 
 const gpsBtn =
 document.getElementById('gpsBtn');
+
+let watchId = null;
+let following = false;
+let marker = null;
 
 gpsBtn.addEventListener('click',()=>{
 
@@ -56,7 +92,9 @@ if(!following){
 
 following=true;
 
-gpsBtn.classList.add('following');
+gpsBtn.classList.add(
+'following'
+);
 
 watchId=
 navigator.geolocation.watchPosition(
@@ -75,7 +113,8 @@ marker=
 L.circleMarker(
 [lat,lng],
 {
-radius:8
+radius:8,
+weight:2
 }
 ).addTo(map);
 
@@ -94,10 +133,29 @@ map.setView(
 },
 
 (err)=>{
-alert(
-'位置情報を取得できません'
+
+gpsBtn.classList.remove(
+'following'
 );
+
+gpsBtn.classList.add(
+'error'
+);
+
+following=false;
+
+alert(
+'位置情報取得に失敗しました'
+);
+
+},
+
+{
+enableHighAccuracy:true,
+maximumAge:0,
+timeout:10000
 }
+
 );
 
 }else{
@@ -108,9 +166,13 @@ gpsBtn.classList.remove(
 'following'
 );
 
+if(watchId){
+
 navigator.geolocation.clearWatch(
 watchId
 );
+
+}
 
 }
 
