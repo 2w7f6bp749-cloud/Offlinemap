@@ -101,3 +101,25 @@ font-size:12px;
 color:#666;
 
 }
+/* コンパスボタン */
+
+.compass-on{
+background:#2196f3 !important;
+color:white;
+}
+
+/* Apple風現在地マーカー */
+
+.user-marker{
+width:24px;
+height:24px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.user-marker svg{
+width:24px;
+height:24px;
+transform-origin:center center;
+}
