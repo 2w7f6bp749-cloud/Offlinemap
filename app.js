@@ -245,7 +245,7 @@ watchId
 });
 
 // コンパス
-
+/*
 compassBtn.addEventListener(
 ‘click’,
 async ()=>{
@@ -333,3 +333,4 @@ alert(
 }
 
 });
+*/
